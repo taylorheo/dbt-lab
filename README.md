@@ -40,15 +40,15 @@ Docker Desktop 환경의 Docker Compose를 통해 쉽게 구성 가능하도록 
 
 ## 3. 사용 방법
 
-### 1. 소스코드 클론
+### 3-1. 소스코드 클론
 
 ```bash
-git clone [Repository URL]
+git clone https://github.com/taylorheo/dbt-lab
 cd [Repository Directory]
 ```
 
 
-### 2. Docker Compose 실행
+### 3-2. Docker Compose 실행
 
 ```bash
 docker-compose up -d
@@ -57,20 +57,20 @@ docker-compose up -d
 - `-d` 옵션은 백그라운드에서 컨테이너를 실행합니다.
 
 
-### 3. JupyterLab 접속
+### 3-3. JupyterLab 접속
 
 웹 브라우저에서 `http://localhost:8888`에 접속하여 JupyterLab을 사용합니다.
 
 - 실험 환경이기 때문에 토큰 인증은 비활성화되어 있습니다. __보안 사고 방지를 위해 절대 운영환경에서 사용하지 마세요.__
 
 
-### 4. Spark 클러스터 확인
+### 3-4. Spark 클러스터 확인
 
 - Spark Master Web UI: `http://localhost:8080`
 - Spark Master는 `spark://spark-master:7077`에서 실행 중입니다.
 
 
-### 5. JupyterLab에서 PySpark 사용
+### 3-5. JupyterLab에서 PySpark 사용
 
 노트북에서 다음과 같이 SparkSession을 생성하여 Spark 클러스터에 연결할 수 있습니다.
 
@@ -85,7 +85,7 @@ spark = SparkSession.builder \
     .getOrCreate()
 ```
 
-### 6. dbt 사용
+### 3-6. dbt 사용
 
 `dbt` 컨테이너에 접속하여 dbt 명령어를 실행할 수 있습니다.
 
