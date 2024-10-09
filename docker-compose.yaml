@@ -42,7 +42,7 @@ services:
       - spark_network
 
   jupyterlab:
-    image: jupyter/pyspark-notebook:x86_64-spark-3.5.0 # 5ae537728c69 # python 3.9
+    image: jupyter/pyspark-notebook:x86_64-spark-3.5.0
     container_name: jupyterlab
     ports:
       - "8888:8888"
