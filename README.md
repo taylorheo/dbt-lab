@@ -40,7 +40,7 @@ Docker Desktop 환경의 Docker Compose를 통해 쉽게 구성 가능하도록 
 
 ## 3. 사용 방법
 
-### 3-1. 소스코드 클론
+### 3-1. 소스코드 클론
 
 ```bash
 git clone https://github.com/taylorheo/dbt-lab
