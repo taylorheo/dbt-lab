@@ -1,0 +1,66 @@
+services:
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-core:latest
+    container_name: dbt
+    volumes:
+      - ./dbt:/dbt
+    working_dir: /dbt
+    networks:
+      - spark_network
+    environment:
+      - PYSPARK_PYTHON=python3
+      - PYSPARK_DRIVER_PYTHON=python3
+      - SPARK_MASTER=spark://spark-master:7077
+    command: ["sleep", "infinity"]  # 사용자가 필요할 때 명령어를 실행할 수 있도록 대기
+
+  spark-master:
+    image: bitnami/spark:3.5.0
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+    networks:
+      - spark_network
+
+  spark-worker:
+    image: bitnami/spark:3.5.0
+    container_name: spark-worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+    depends_on:
+      - spark-master
+    networks:
+      - spark_network
+
+  jupyterlab:
+    image: jupyter/pyspark-notebook:x86_64-spark-3.5.0 # 5ae537728c69 # python 3.9
+    container_name: jupyterlab
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./jupyterhub/jupyter_notebook_config.py:/home/jovyan/.jupyter/jupyter_notebook_config.py
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=""  # Disable token authentication
+      - PYSPARK_PYTHON=python3
+      - PYSPARK_DRIVER_PYTHON=python3
+    depends_on:
+      - spark-master
+    networks:
+      - spark_network
+
+
+networks:
+  spark_network:
+    driver: bridge
